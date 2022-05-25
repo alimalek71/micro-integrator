@@ -44,15 +44,14 @@ public class ESBtoBackendHttp2Test extends ESBIntegrationTest {
         server.startServer();
     }
 
-    @Test(description = "Verify HTTP/2 protocol used in request-response between the ESB and backend")
+    @Test(description = "Test HTTP/2 request-response between the ESB and backend")
     public void testHttp2RequestESBtoBackend() throws Exception {
 
         OkHttpClient client =
                 new OkHttpClient.Builder().protocols(Collections.singletonList(Protocol.H2_PRIOR_KNOWLEDGE)).connectTimeout(Duration.ofSeconds(1000)).build();
         Request request = new Request.Builder().url("http://localhost:5056/http2BackendCall").get().build();
         Response response = client.newCall(request).execute();
-        Assert.assertEquals(response.body().string(), BridgeConstants.HTTP_2_0_VERSION, "HTTP/2 protocol is not used "
-                + "between the ESB and backend communication");
+        Assert.assertEquals(response.body().string(), BridgeConstants.HTTP_2_0_VERSION);
     }
 
     @AfterClass(alwaysRun = true)
